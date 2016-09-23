@@ -12,8 +12,7 @@ try {
 
 var app = express();
 
-var port = process.env.PORT || 5000;
-var https_port = process.env.HTTPS_PORT || parseInt(port) + 1;
+app.set('port', (process.env.PORT || 5000));
 
 app.set('view engine', 'ejs');
 app.set('views', __dirname + '/node/ejs/pages');
@@ -28,4 +27,6 @@ app.get('/api/beacons', queries.getBeacons);
 app.get('/api/venue', queries.getVenue);
 app.get('/api/graph', queries.getGraph);
 
-app.listen(5000);
+app.listen(app.get('port'), function() {
+  console.log('Node app is running on port', app.get('port'));
+});
