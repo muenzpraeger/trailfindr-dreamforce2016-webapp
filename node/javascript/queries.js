@@ -61,7 +61,6 @@ module.exports.getBeacons = (req, resp) => {
   pg.connect(process.env.DATABASE_URL, function(err, client) {
     if (err) throw err;
 
-    //var query = client.query('select beacon.name, beacon.major_id__c, beacon.minor_id__c, beacon.uuid__c FROM wayfindr.beacon__c AS beacon;');
     var query = client.query('select beacon.name, beacon.major_id__c, beacon.minor_id__c, beacon.uuid__c FROM wayfindr.point_of_interest__c AS poi, wayfindr.beacon__c AS beacon WHERE poi.beacon__c = beacon.sfid;');
 
     var beacons = [];
@@ -75,11 +74,12 @@ module.exports.getBeacons = (req, resp) => {
       beacons.push(beacon);
     });
 
-    query.on('end', function() {
+    query.on('end', function(err1) {
         var wrapper = {};
         wrapper.beacons = beacons;
         resp.set('Content-Type', 'application/json');
         resp.send(JSON.stringify(wrapper));
+        client.end();
     });
 
   });
@@ -105,14 +105,12 @@ function getNodes(client, callback) {
   });
 
   query.on('end', function() {
-    //keys.push(nodes);
     var graph = {graph:
       [
         { _attr: { id: 'Venue', edgedefault: 'directed'}},
         {nodes: nodes}
       ]
     };
-    //console.log(xml(graph, true));
     callback(nodes);
   });
 }
@@ -141,7 +139,6 @@ function getEdges(client, callback) {
           {data: [{ _attr: {key: 'travel_time'}}, row.travel_time__c]},
           {data: [{ _attr: {key: 'beginning'}}, row.beginning__c]},
           {data: [{ _attr: {key: 'ending'}}, row.ending__c]},
-          {data: [{ _attr: {key: 'heading'}}, row.heading__c]},
           {data: [{ _attr: {key: 'language'}}, 'en-GB']}
         ]
       };
@@ -149,6 +146,7 @@ function getEdges(client, callback) {
     });
 
     queryPathways.on('end', function() {
+      client.end();
       callback(edges);
     });
   });

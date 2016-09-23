@@ -28,18 +28,4 @@ app.get('/api/beacons', queries.getBeacons);
 app.get('/api/venue', queries.getVenue);
 app.get('/api/graph', queries.getGraph);
 
-// Create an HTTP service
-http.createServer(app).listen(port);
-console.log("Server listening for HTTP connections on port ", port);
-
-// Create an HTTPS service if the certs are present
-try {
-	var options = {
-	  key: fs.readFileSync('key.pem'),
-	  cert: fs.readFileSync('key-cert.pem')
-	};
-	https.createServer(options, app).listen(https_port);
-	console.log("Server listening for HTTPS connections on port ", https_port);
-} catch (e) {
-	console.error("Security certs not found, HTTPS not available");
-}
+app.listen(5000);
