@@ -35,6 +35,7 @@ module.exports.getVenue = (req, resp) => {
         wrapper.venue = venue;
         resp.set('Content-Type', 'application/json');
         resp.send(JSON.stringify(wrapper));
+        client.end();
     });
 
   });
