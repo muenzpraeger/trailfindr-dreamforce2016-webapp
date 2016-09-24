@@ -9,7 +9,7 @@ module.exports.getVenue = (req, resp) => {
   pg.connect(process.env.DATABASE_URL, function(err, client) {
     if (err) throw err;
 
-    var query = client.query('select poi.name, beacon.major_id__c, beacon.minor_id__c FROM wayfindr.point_of_interest__c AS poi, wayfindr.beacon__c AS beacon WHERE poi.beacon__c = beacon.sfid;');
+    var query = client.query('select poi.name, beacon.major_id__c, beacon.minor_id__c FROM trailfindr.point_of_interest__c AS poi, trailfindr.beacon__c AS beacon WHERE poi.beacon__c = beacon.sfid;');
 
     var venue = {};
     venue.name = 'Trailhead Zone';
@@ -61,7 +61,7 @@ module.exports.getBeacons = (req, resp) => {
   pg.connect(process.env.DATABASE_URL, function(err, client) {
     if (err) throw err;
 
-    var query = client.query('select beacon.name, beacon.major_id__c, beacon.minor_id__c, beacon.uuid__c FROM wayfindr.point_of_interest__c AS poi, wayfindr.beacon__c AS beacon WHERE poi.beacon__c = beacon.sfid;');
+    var query = client.query('select beacon.name, beacon.major_id__c, beacon.minor_id__c, beacon.uuid__c FROM trailfindr.point_of_interest__c AS poi, trailfindr.beacon__c AS beacon WHERE poi.beacon__c = beacon.sfid;');
 
     var beacons = [];
 
@@ -87,7 +87,7 @@ module.exports.getBeacons = (req, resp) => {
 
 
 function getNodes(client, callback) {
-  var query = client.query('select poi.id, poi.name, beacon.major_id__c, beacon.minor_id__c FROM wayfindr.point_of_interest__c AS poi, wayfindr.beacon__c AS beacon WHERE poi.beacon__c = beacon.sfid;');
+  var query = client.query('select poi.id, poi.name, beacon.major_id__c, beacon.minor_id__c FROM trailfindr.point_of_interest__c AS poi, trailfindr.beacon__c AS beacon WHERE poi.beacon__c = beacon.sfid;');
 
   var nodes = [];
 
@@ -117,8 +117,8 @@ function getNodes(client, callback) {
 
 
 function getEdges(client, callback) {
-  //var query = client.query('SELECT path.id, path.name, beacon.major_id__c, beacon.minor_id__c FROM wayfindr.point_of_interest__c AS poi, wayfindr.beacon__c AS beacon WHERE poi.beacon__c = beacon.sfid;');
-  var queryPois = client.query('SELECT poi.id, poi.sfid FROM wayfindr.point_of_interest__c AS poi;');
+  //var query = client.query('SELECT path.id, path.name, beacon.major_id__c, beacon.minor_id__c FROM trailfindr.point_of_interest__c AS poi, trailfindr.beacon__c AS beacon WHERE poi.beacon__c = beacon.sfid;');
+  var queryPois = client.query('SELECT poi.id, poi.sfid FROM trailfindr.point_of_interest__c AS poi;');
   var pois = {};
 
   queryPois.on('row', function(row) {
@@ -127,7 +127,7 @@ function getEdges(client, callback) {
 
   queryPois.on('end', function() {
 
-    var queryPathways = client.query('SELECT * FROM wayfindr.pathway__c AS pathway;');
+    var queryPathways = client.query('SELECT * FROM trailfindr.pathway__c AS pathway;');
 
     var edges = [];
 
