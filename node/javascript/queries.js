@@ -9,30 +9,41 @@ module.exports.getVenue = (req, resp) => {
   pg.connect(process.env.DATABASE_URL, function(err, client) {
     if (err) throw err;
 
-    var query = client.query('select poi.name, beacon.major_id__c, beacon.minor_id__c FROM trailfindr.point_of_interest__c AS poi, trailfindr.beacon__c AS beacon WHERE poi.beacon__c = beacon.sfid;');
+    var query = client.query('select poi.name, poi.venue_type__c, beacon.major_id__c, beacon.minor_id__c FROM trailfindr.point_of_interest__c AS poi, trailfindr.beacon__c AS beacon WHERE poi.beacon__c = beacon.sfid ORDER BY poi.venue_type__c;');
 
+    var venues = [];
     var venue = {};
-    venue.name = 'Trailhead Zone';
-    var pois = [];
+    var tempVenueName = '';
+    var venueElements = [];
+    var wrapper = {};
 
     query.on('row', function(row) {
-      var poi = {};
-      poi.name = row.name;
-      poi.entrance_beacon_minor = row.minor_id__c;
-      poi.entrance_beacon_major = row.major_id__c;
-      poi.exit_beacon_minor = row.minor_id__c;
-      poi.exit_beacon_major = row.major_id__c;
+      if (row.venue_type__c != tempVenueName) {
+        if (tempVenueName != '') {
+          venue.pois = venueElements;
+          venues.push(venue);
+          venueElements = [];
+        }
+        venue = {};
+        tempVenueName = row.venue_type__c;
+        venue.name = tempVenueName;
+      }
+      var venueElement = {};
+      venueElement.name = row.name;
+      venueElement.entrance_beacon_minor = row.minor_id__c;
+      venueElement.entrance_beacon_major = row.major_id__c;
+      venueElement.exit_beacon_minor = row.minor_id__c;
+      venueElement.exit_beacon_major = row.major_id__c;
       var destinations = [];
       destinations.push(row.name)
-      poi.destinations = destinations;
-      pois.push(poi);
+      venueElement.destinations = destinations;
+      venueElements.push(venueElement);
     });
 
     query.on('end', function() {
-        venue.pois = pois;
-        venue.exits = [];
-        var wrapper = {};
-        wrapper.venue = venue;
+        venue.pois = venueElements;
+        venues.push(venue);
+        wrapper.venues = venues;
         resp.set('Content-Type', 'application/json');
         resp.send(JSON.stringify(wrapper));
         client.end();
