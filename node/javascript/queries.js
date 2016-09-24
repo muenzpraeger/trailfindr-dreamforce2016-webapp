@@ -11,6 +11,7 @@ module.exports.getVenue = (req, resp) => {
 
     var query = client.query('select poi.name, poi.venue_type__c, beacon.major_id__c, beacon.minor_id__c FROM trailfindr.point_of_interest__c AS poi, trailfindr.beacon__c AS beacon WHERE poi.beacon__c = beacon.sfid ORDER BY poi.venue_type__c;');
 
+    var exits = [];
     var venues = [];
     var venue = {};
     var tempVenueName = '';
@@ -20,8 +21,12 @@ module.exports.getVenue = (req, resp) => {
     query.on('row', function(row) {
       if (row.venue_type__c != tempVenueName) {
         if (tempVenueName != '') {
-          venue.pois = venueElements;
-          venues.push(venue);
+          if (tempVenueName == 'Exits') {
+            exits = venueElements;
+          } else {
+            venue.pois = venueElements;
+            venues.push(venue);
+          }
           venueElements = [];
         }
         venue = {};
@@ -34,16 +39,24 @@ module.exports.getVenue = (req, resp) => {
       venueElement.entrance_beacon_major = row.major_id__c;
       venueElement.exit_beacon_minor = row.minor_id__c;
       venueElement.exit_beacon_major = row.major_id__c;
-      var destinations = [];
-      destinations.push(row.name)
-      venueElement.destinations = destinations;
+      if (tempVenueName != 'Exits') {
+        var destinations = [];
+        destinations.push(row.name)
+        venueElement.destinations = destinations;
+      }
       venueElements.push(venueElement);
     });
 
     query.on('end', function() {
         venue.pois = venueElements;
-        venues.push(venue);
+        if (tempVenueName == 'Exits') {
+          exits = venueElements;
+        } else {
+          venue.pois = venueElements;
+          venues.push(venue);
+        }
         wrapper.venues = venues;
+        wrapper.exits = exits;
         resp.set('Content-Type', 'application/json');
         resp.send(JSON.stringify(wrapper));
         client.end();
