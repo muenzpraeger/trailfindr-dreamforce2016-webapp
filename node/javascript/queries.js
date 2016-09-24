@@ -139,6 +139,7 @@ function getEdges(client, callback) {
           {data: [{ _attr: {key: 'travel_time'}}, row.travel_time__c]},
           {data: [{ _attr: {key: 'beginning'}}, row.beginning__c]},
           {data: [{ _attr: {key: 'ending'}}, row.ending__c]},
+          {data: [{ _attr: {key: 'heading'}}, row.heading__c]},
           {data: [{ _attr: {key: 'language'}}, 'en-GB']}
         ]
       };
