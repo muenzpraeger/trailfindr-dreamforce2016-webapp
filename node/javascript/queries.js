@@ -112,7 +112,7 @@ module.exports.getBeacons = (req, resp) => {
 
 
 function getNodes(client, callback) {
-  var query = client.query('select poi.id, poi.name, beacon.major_id__c, beacon.minor_id__c FROM trailfindr.point_of_interest__c AS poi, trailfindr.beacon__c AS beacon WHERE poi.beacon__c = beacon.sfid;');
+  var query = client.query('select poi.id, poi.name, beacon.major_id__c, beacon.minor_id__c, beacon.accuracy__c FROM trailfindr.point_of_interest__c AS poi, trailfindr.beacon__c AS beacon WHERE poi.beacon__c = beacon.sfid;');
 
   var nodes = [];
 
@@ -122,6 +122,7 @@ function getNodes(client, callback) {
         { _attr: { id: row.id}},
         {data: [{ _attr: {key: 'major'}}, row.major_id__c]},
         {data: [{ _attr: {key: 'minor'}}, row.minor_id__c]},
+        {data: [{ _attr: {key: 'accuracy'}}, row.accuracy__c]},
         {data: [{ _attr: {key: 'name'}}, row.name]},
         {data: [{ _attr: {key: 'waypoint_type'}}, row.type]}
       ]
@@ -197,7 +198,7 @@ function buildXml(nodes, edges, callback) {
       {key: { _attr: { id: 'minor', for: 'node', 'attr.name': 'travel_time', 'attr.type': 'int' }}},
       {key: { _attr: { id: 'name', for: 'node', 'attr.name': 'name', 'attr.type': 'string' }}},
       {key: { _attr: { id: 'waypoint_type', for: 'node', 'attr.name': 'waypoint_type', 'attr.type': 'string' }}},
-      {key: [{ _attr: { id: 'accuracy', for: 'node', 'attr.name': 'accuracy', 'attr.type': 'double' }}, {default: 4}]},
+      {key: [{ _attr: { id: 'accuracy', for: 'node', 'attr.name': 'accuracy', 'attr.type': 'double' }}, {default: 10}]},
       {graph:
         [
           { _attr: { id: 'ExampleStation', edgedefault: 'directed'}},
