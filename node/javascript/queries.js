@@ -177,12 +177,7 @@ function getEdges(client, callback) {
       callback(edges);
     });
   });
-
-
-
-
 }
-
 
 function buildXml(nodes, edges, callback) {
   var graphml = {graphml:
@@ -209,4 +204,17 @@ function buildXml(nodes, edges, callback) {
     ]
   };
   callback(graphml);
+}
+
+module.exports.getConfig = (req, resp) => {
+
+  var config = {};
+  var heading = {};
+
+  heading.vibrate = true;
+  heading.deviation = 10;
+  config.heading = heading;
+
+  resp.send(JSON.stringify(config));
+
 }
