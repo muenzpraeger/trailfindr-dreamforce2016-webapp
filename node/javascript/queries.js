@@ -122,9 +122,7 @@ function getNodes(client, callback) {
         { _attr: { id: row.id}},
         {data: [{ _attr: {key: 'major'}}, row.major_id__c]},
         {data: [{ _attr: {key: 'minor'}}, row.minor_id__c]},
-        if (row.accuracy__c) {
-            {data: [{ _attr: {key: 'accuracy'}}, row.accuracy__c]},
-        }
+        {data: [{ _attr: {key: 'accuracy'}}, row.accuracy__c]},
         {data: [{ _attr: {key: 'name'}}, row.name]},
         {data: [{ _attr: {key: 'waypoint_type'}}, row.type]}
       ]
