@@ -1,4 +1,5 @@
 var pg = require('pg');
+var request = require('request');
 
 pg.defaults.ssl = true;
 
@@ -24,4 +25,9 @@ module.exports.setFeedback = (req, resp) => {
     });
 
   });
+}
+
+
+module.exports.registerItunes = (req, resp) => {
+
 }
