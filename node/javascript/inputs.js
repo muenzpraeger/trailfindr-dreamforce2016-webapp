@@ -30,4 +30,14 @@ module.exports.setFeedback = (req, resp) => {
 
 module.exports.registerItunes = (req, resp) => {
 
+  var mail = req.body.mail;
+
+  console.log(mail);
+
+  var exec = require("child_process").exec;
+
+  exec('ruby -e "puts \'Hello from Ruby!\'"', function (err, stdout, stderr) {
+      console.log(stdout);
+  });
+
 }
