@@ -3,6 +3,14 @@
 <%- include _html_header.ejs %>
 <%- include _header.ejs %>
 <br />
-<center>You'll find setup instructions for the app here soon.</center>
+<center>Please enter your iTunes ID in here to register for the 'TrailFindr' app.<br /><br />You'll get an invitation mail from Apple after the registration. No personal data will be stored on Salesforce systems.<br /><br />
+
+  <div class="slds-form-element__control">
+     <input id="mail" class="slds-input" type="text" placeholder="Your iTunes ID" style="width:300px;" />
+   </div>
+   <button class="slds-button slds-button--neutral slds-not-selected" aria-live="assertive" onclick="registerItunes()">
+     Register
+   </button>
+</center>
 
 <%- include _html_footer.ejs %>
