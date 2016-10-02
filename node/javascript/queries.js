@@ -213,7 +213,7 @@ module.exports.getConfig = (req, resp) => {
 
   heading.heading = true;
   heading.vibrate = true;
-  heading.deviation = 10;
+  heading.deviation = 20;
   config.heading = heading;
 
   resp.send(JSON.stringify(config));
