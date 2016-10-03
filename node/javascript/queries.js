@@ -9,7 +9,7 @@ module.exports.getVenue = (req, resp) => {
   pg.connect(process.env.DATABASE_URL, function(err, client) {
     if (err) throw err;
 
-    var query = client.query('select poi.name, poi.venue_type__c, beacon.major_id__c, beacon.minor_id__c FROM trailfindr.point_of_interest__c AS poi, trailfindr.beacon__c AS beacon WHERE poi.beacon__c = beacon.sfid ORDER BY poi.venue_type__c;');
+    var query = client.query('select poi.name, poi.venue_type__c, poi.is_destination__c, beacon.major_id__c, beacon.minor_id__c FROM trailfindr.point_of_interest__c AS poi, trailfindr.beacon__c AS beacon WHERE poi.beacon__c = beacon.sfid ORDER BY poi.venue_type__c;');
 
     var exits = [];
     var venues = [];
@@ -44,7 +44,9 @@ module.exports.getVenue = (req, resp) => {
         destinations.push(row.name)
         venueElement.destinations = destinations;
       }
-      venueElements.push(venueElement);
+      if (row.is_destination__c) {
+          venueElements.push(venueElement);
+      }
     });
 
     query.on('end', function() {
