@@ -214,7 +214,7 @@ module.exports.getConfig = (req, resp) => {
   var heading = {};
 
   heading.heading = true;
-  heading.vibrate = true;
+  heading.vibrate = false;
   heading.every = true;
   heading.deviation = 30;
   config.heading = heading;
