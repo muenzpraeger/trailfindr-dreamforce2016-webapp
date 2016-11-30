@@ -1,8 +1,5 @@
 # trailfindr-dreamforce2016-webapp 
 
-TODO:
-Check Spelling
-Add Explanation for Fastlane
 
 This app was created for the TrailFindr project at Dreamforce 2016, where we enabled vision impaired people to navigate with the TrailFindr app autonomously througout the Trailhead zone. TrailFindr is based on the [Wayfindr Open Standard](https://www.wayfindr.net/open-standard).
 
