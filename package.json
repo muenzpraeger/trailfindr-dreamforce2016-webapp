@@ -1,6 +1,6 @@
 {
-  "name": "trailfindr-dreamforce2016-webapp",
-  "description": "Node.js based component for providing TrailFindr REST data for the TrailFindr iOS app",
+  "name": "wayfindr-dreamforce2016-webapp",
+  "description": "Node.js based component for providing Wayfindr REST data for the Wayfindr iOS app",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
