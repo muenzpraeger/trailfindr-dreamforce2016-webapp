@@ -9,5 +9,10 @@
 	],
 	"website": "https://github.com/muenzpraeger/trailfindr-dreamforce2016-webapp",
 	"repository": "https://github.com/muenzpraeger/trailfindr-dreamforce2016-webapp",
-	"success_url": "/"
+	"success_url": "/",
+	"env": {
+		"FASTLANE_APP_ID":     { "description": "ID of the iTunes app" },
+		"FASTLANE_USERNAME":  { "description": "Apple ID of the iTunes Connect user" },
+		"FASTLANE_PASSWORD":  { "description": "Password of the iTunes Connect user" }
+  	}
 }

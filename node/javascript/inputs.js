@@ -43,19 +43,9 @@ module.exports.registerItunes = (req, resp) => {
   var exec = require("child_process").exec;
 
   exec('cp -rpv /app/fastlane-mods/* /app/vendor/bundle/ruby/2.0.0/gems/pilot-1.10.0/lib/pilot', function(err, stdout, stderr) {
-  console.log('Running copy command');
-  console.log(err);
-  console.log(stderr);
-  console.log(stdout);
-  console.log('Ending copy command');
-});
+  });
 
   exec(fastlaneCommand, function (err, stdout, stderr) {
-      console.log('Running Fastlane');
-      console.log(err);
-      console.log(stderr);
-      console.log(stdout);
-      console.log('Ending Fastlane');
       resp.send('done');
   });
 
